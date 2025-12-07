@@ -8,7 +8,7 @@ import "primeicons/primeicons.css";
 import Lara from "@primevue/themes/lara";
 import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
-import setupI18n from "./i18n";
+import setupI18n from "../i18n";
 import registerErrorHandler from "./plugins/errorHandler";
 
 const app = createApp(App);
@@ -34,7 +34,7 @@ app.component("PrimeToast", Toast);
 // Start MSW in development if environment is set
 if (import.meta.env.VITE_USE_MOCKS === "true") {
   // browser worker
-  import("./mocks/browser").then(({ worker }) => {
+  import("../mocks/browser").then(({ worker }) => {
     worker.start();
   });
 }

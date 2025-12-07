@@ -42,6 +42,10 @@ export default defineConfig({
           importTheme: false,
         }),
       ],
+      dirs: [
+        'src/components',
+        'src/domain/**/components',
+      ],
       dts: 'src/components.d.ts',
     }),
   ],

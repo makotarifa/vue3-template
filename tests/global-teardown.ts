@@ -1,4 +1,4 @@
-import { server } from '../src/mocks/server';
+import { server } from '../mocks/server';
 
 export default async function globalTeardown() {
   server.close();

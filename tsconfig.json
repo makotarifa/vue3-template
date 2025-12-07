@@ -17,6 +17,6 @@
     },
     "types": ["vite/client"]
   },
-  "include": ["src/**/*", "tests/**/*", "vite.config.*"],
+  "include": ["src/**/*", "tests/**/*", "vite.config.*", "i18n", "mocks"],
   "exclude": ["node_modules"]
 }

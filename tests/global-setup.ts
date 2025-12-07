@@ -1,4 +1,4 @@
-import { server } from '../src/mocks/server';
+import { server } from '../mocks/server';
 
 const startServer = async () => {
   server.listen({ onUnhandledRequest: 'warn' });

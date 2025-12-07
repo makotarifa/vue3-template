@@ -28,7 +28,7 @@ npm run test:e2e
 ## Structure Notes
 
 - `src/main.ts` - app bootstrap (PrimeVue, Pinia, Router, i18n, Toasts)
-- `src/components/layout` - `AppShell`, `Header`, `Footer` components
+- `src/domain/layout/components` - `AppShell`, `Header`, `Footer` components
 - `src/domain` - domain modules. "common" houses http and utilities; "dummy" shows a simple domain example.
 - `src/locales` - i18n JSON files (en, es)
 - `src/stores` - Pinia stores
