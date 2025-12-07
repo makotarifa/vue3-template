@@ -1,0 +1,22 @@
+{
+  "app": {
+    "title": "Vue Template",
+    "subtitle": "Vue 3 + Vite + Tailwind + PrimeVue",
+    "tailwindInfo": "Tailwind is configured; router and pinia are set up."
+  },
+  "controls": {
+    "increment": "Increment",
+    "count": "Count",
+    "openDialog": "Open dialog",
+    "close": "Close",
+    "subscribe": "Subscribe",
+    "primevueControls": "PrimeVue Controls",
+    "form": "Form (Vee-validate)",
+    "submit": "Submit",
+    "dialogHeader": "Example dialog",
+    "dialogText": "This is a PrimeVue dialog example.",
+    "namePlaceholder": "Name",
+    "fullNamePlaceholder": "Full name",
+    "formNameRequired": "Form name is required"
+  }
+}

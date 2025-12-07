@@ -1,0 +1,22 @@
+{
+  "app": {
+    "title": "Plantilla Vue",
+    "subtitle": "Vue 3 + Vite + Tailwind + PrimeVue",
+    "tailwindInfo": "Tailwind está configurado; router y pinia están configurados."
+  },
+  "controls": {
+    "increment": "Incrementar",
+    "count": "Contador",
+    "openDialog": "Abrir diálogo",
+    "close": "Cerrar",
+    "subscribe": "Suscribirse",
+    "primevueControls": "Controles de PrimeVue",
+    "form": "Formulario (Vee-validate)",
+    "submit": "Enviar",
+    "dialogHeader": "Diálogo de ejemplo",
+    "dialogText": "Este es un ejemplo de diálogo de PrimeVue.",
+    "namePlaceholder": "Nombre",
+    "fullNamePlaceholder": "Nombre completo",
+    "formNameRequired": "El nombre del formulario es obligatorio"
+  }
+}
