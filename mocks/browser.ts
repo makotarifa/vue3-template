@@ -1,5 +1,5 @@
 // @ts-ignore
-import { setupWorker } from "msw";
+import { setupWorker } from "msw/browser";
 // @ts-ignore
 import { handlers } from "./handlers";
 

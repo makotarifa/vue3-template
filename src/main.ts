@@ -32,7 +32,8 @@ app.use(ToastService);
 app.component("PrimeToast", Toast);
 
 // Start MSW in development if environment is set
-if (import.meta.env.VITE_USE_MOCKS === "true") {
+// Ensure this only runs in development builds so bundlers don't include msw
+if (import.meta.env.DEV && import.meta.env.VITE_USE_MOCKS === "true") {
   // browser worker
   import("../mocks/browser").then(({ worker }) => {
     worker.start();
