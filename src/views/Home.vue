@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-slate-950 text-slate-50 py-10">
     <div class="max-w-5xl mx-auto px-4 lg:px-8">
       <section
-        class="relative overflow-hidden rounded-3xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 via-sky-500/10 to-slate-900/60 shadow-2xl p-8 lg:p-10"
+        class="relative overflow-hidden rounded-3xl border border-slate-800 bg-linear-to-br from-emerald-500/10 via-sky-500/10 to-slate-900/60 shadow-2xl p-8 lg:p-10"
       >
         <div
           class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-tight text-slate-200"
@@ -173,17 +173,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useCounterStore } from "@/stores/counter";
-import { useForm } from "vee-validate";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Dialog from "primevue/dialog";
 import Card from "primevue/card";
 import { getDummyItems, DummyItem } from "@/domain/dummy/services/dummyService";
-import { onMounted } from "vue";
 
 const store = useCounterStore();
 const inc = () => store.increment();
@@ -197,11 +195,9 @@ const dialogVisible = ref(false);
 
 // vee-validate form (light example)
 const formName = ref("");
-const formErrors = ref([]);
+const formErrors = ref<string[]>([]);
 
 const items = ref<DummyItem[]>([]);
-
-const { handleSubmit } = useForm();
 
 onMounted(async () => {
   try {
@@ -212,7 +208,7 @@ onMounted(async () => {
   }
 });
 
-const submitForm = handleSubmit(() => {
+const submitForm = () => {
   formErrors.value = [];
   if (!formName.value) {
     formErrors.value.push(t("controls.formNameRequired"));
@@ -220,7 +216,7 @@ const submitForm = handleSubmit(() => {
   }
   // Example success
   console.log(`Form submitted: ${formName.value}`);
-});
+};
 </script>
 
 <style scoped>

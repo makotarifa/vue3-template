@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
-import path from 'path'
+import path from 'node:path'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 // https://vite.dev/config/

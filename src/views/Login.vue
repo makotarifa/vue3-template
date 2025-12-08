@@ -4,12 +4,12 @@
       <h2 class="text-lg font-bold mb-4">Login</h2>
       <form @submit.prevent="handleSubmit">
         <div class="mb-3">
-          <label class="block text-sm mb-1">Username</label>
-          <input v-model="username" class="w-full border px-3 py-2" />
+          <label for="username" class="block text-sm mb-1">Username</label>
+          <input id="username" v-model="username" class="w-full border px-3 py-2" />
         </div>
         <div class="mb-3">
-          <label class="block text-sm mb-1">Password</label>
-          <input v-model="password" type="password" class="w-full border px-3 py-2" />
+          <label for="password" class="block text-sm mb-1">Password</label>
+          <input id="password" v-model="password" type="password" class="w-full border px-3 py-2" />
         </div>
         <div>
           <button class="bg-blue-600 text-white px-4 py-2 rounded">Login</button>
@@ -38,5 +38,3 @@ const handleSubmit = async () => {
   }
 };
 </script>
-
-<style scoped></style>

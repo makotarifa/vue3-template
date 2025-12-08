@@ -6,7 +6,7 @@ export const useAuthStore = defineStore("auth", {
     token:
       (typeof localStorage !== "undefined" && localStorage.getItem("token")) ||
       (null as string | null),
-    user: null as any | null,
+    user: null as { username: string } | null,
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,

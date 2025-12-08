@@ -6,10 +6,5 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
-import type { DummyItem } from "@/domain/dummy/services/dummyService";
-
-const { item } = defineProps<{ item: DummyItem }>();
+defineProps<{ item: { name: string; id: string | number } }>();
 </script>
-
-<style scoped></style>

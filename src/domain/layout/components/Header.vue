@@ -9,14 +9,14 @@
       <div class="flex items-center gap-3">
         <button
           class="px-3 py-1 border rounded"
-          :class="{ 'bg-gray-200': locale.value === 'en' }"
+          :class="{ 'bg-gray-200': locale === 'en' }"
           @click="setLocale('en')"
         >
           EN
         </button>
         <button
           class="px-3 py-1 border rounded"
-          :class="{ 'bg-gray-200': locale.value === 'es' }"
+          :class="{ 'bg-gray-200': locale === 'es' }"
           @click="setLocale('es')"
         >
           ES

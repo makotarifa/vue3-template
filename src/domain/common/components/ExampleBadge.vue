@@ -3,8 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
 const { label } = defineProps<{ label: string }>();
 </script>
-
-<style scoped></style>

@@ -10,7 +10,7 @@ export default function registerErrorHandler(app: App) {
   };
 
   // Promise rejections
-  window.addEventListener("unhandledrejection", (ev) => {
+  globalThis.addEventListener("unhandledrejection", (ev) => {
     const reason = (ev.reason && (ev.reason.message || ev.reason)) || "Unhandled rejection";
     console.error("Unhandled Rejection", ev.reason);
     emitter.emit("error", reason as string);

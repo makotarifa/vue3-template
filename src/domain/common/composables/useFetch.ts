@@ -9,7 +9,7 @@ export function useFetch<T>(url: string) {
     loading.value = true;
     try {
       const res = await api.get<T>(url);
-      data.value = res.data as T;
+      data.value = res.data;
     } finally {
       loading.value = false;
     }

@@ -1,6 +1,10 @@
 import axios, { AxiosError } from "axios";
 import emitter from "./eventBus";
 
+interface ErrorResponse {
+  message?: string;
+}
+
 const baseURL = import.meta.env.VITE_API_BASE_URL || "";
 
 const api = axios.create({
@@ -30,11 +34,13 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (res) => res,
-  (error: AxiosError | unknown) => {
-    const axiosError = error as AxiosError | any;
-    const message = axiosError?.response?.data?.message || axiosError?.message || "Network error";
+  (error: unknown) => {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const responseMessage = axiosError?.response?.data?.message;
+    const errorMessage = axiosError?.message;
+    const message = responseMessage || errorMessage || "Network error";
     // Emit a global error
-    emitter.emit("error", message as string);
+    emitter.emit("error", message);
     return Promise.reject(error);
   }
 );
