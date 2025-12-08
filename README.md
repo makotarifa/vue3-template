@@ -1,5 +1,9 @@
 # Vue Template (TypeScript + Vite + Tailwind + PrimeVue)
 
+![CI](https://github.com/makotarifa/vue3-template/actions/workflows/ci.yml/badge.svg)
+![Build](https://github.com/makotarifa/vue3-template/actions/workflows/ci-build.yml/badge.svg)
+![E2E](https://github.com/makotarifa/vue3-template/actions/workflows/ci-e2e.yml/badge.svg)
+
 This template uses Vue 3 and TypeScript with Vite. It includes a small set of tools to help you bootstrap new projects with a modern stack.
 
 ## Highlights
@@ -14,7 +18,17 @@ This template uses Vue 3 and TypeScript with Vite. It includes a small set of to
 - Basic domain folder structure: `domain/common` and `domain/dummy` with example services, composables and components
 - Simple AppShell layout with Header / Footer and error toast
 
-## Quick Commands
+## Developer Quickstart
+
+Prerequisites:
+- Node.js 20+ and npm
+- Docker if you want to run the production image locally
+
+Environment (optional for dev):
+- VITE_USE_MOCKS=true to enable Mock Service Worker (MSW)
+- VITE_API_URL=https://your.api.url if you want to point to a remote backend
+
+Quick commands:
 
 ```bash
 npm install
