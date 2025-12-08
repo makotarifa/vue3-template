@@ -18,7 +18,7 @@
         <Button :label="t('controls.increment')" icon="pi pi-plus" @click="inc" />
         <span class="px-3 py-2 rounded border">{{ t("controls.count") }}: {{ count }}</span>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 bg-red-500">
         <Card>
           <template #title>{{ t("controls.primevueControls") }}</template>
           <template #content>
