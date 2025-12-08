@@ -1,18 +1,16 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
     <div
-      class="max-w-2xl w-full bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-gray-200 dark:border-gray-700"
+      class="max-w-2xl w-full bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-gray-200 dark:border-gray-700 mx-auto mt-8"
     >
       <div
         class="flex items-center justify-between mb-4 pb-3 border-b border-gray-100 dark:border-gray-700"
       >
-        <div>
-          <h1 class="text-3xl font-extrabold">{{ t("app.title") }}</h1>
-          <h2 class="text-2xl font-bold">{{ t("app.subtitle") }}</h2>
-        </div>
-        <div class="flex gap-2 items-center">
-          <Button :label="'EN'" class="text-xs px-2 py-1" @click="setLocale('en')" />
-          <Button :label="'ES'" class="text-xs px-2 py-1" @click="setLocale('es')" />
+        <!-- Title and language controls are now in header -->
+        <div class="mb-4 pb-2 border-b border-gray-100 dark:border-gray-700">
+          <p class="text-center text-lg text-gray-700 dark:text-gray-300">
+            {{ t("app.subtitle") }}
+          </p>
         </div>
       </div>
       <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">{{ t("app.tailwindInfo") }}</p>
@@ -96,11 +94,7 @@ const store = useCounterStore();
 const inc = () => store.increment();
 const count = computed(() => store.count);
 
-const { t, locale } = useI18n();
-
-const setLocale = (l) => {
-  locale.value = l;
-};
+const { t } = useI18n();
 
 const name = ref("");
 const subscribed = ref(false);
