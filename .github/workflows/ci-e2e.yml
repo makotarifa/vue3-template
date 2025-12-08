@@ -29,5 +29,3 @@ jobs:
 
       - name: Run Playwright E2E tests
         run: npm run test:e2e
-
-*** End Patch
