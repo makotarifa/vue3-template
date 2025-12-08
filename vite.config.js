@@ -4,6 +4,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
 import path from 'path'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -28,6 +29,7 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [
       vue(),
+      tsconfigPaths(),
       AutoImport({
         imports: [
           'vue',
