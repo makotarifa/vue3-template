@@ -6,17 +6,17 @@
         <img src="/src/assets/vue.svg" class="logo vue" alt="Vue logo" />
         <h1 class="text-lg font-semibold">{{ t("app.title") }}</h1>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
         <button
-          class="px-3 py-1 border rounded"
-          :class="{ 'bg-gray-200': locale === 'en' }"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
+          :class="{ 'bg-slate-200 dark:bg-slate-700': locale === 'en' }"
           @click="setLocale('en')"
         >
           EN
         </button>
         <button
-          class="px-3 py-1 border rounded"
-          :class="{ 'bg-gray-200': locale === 'es' }"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
+          :class="{ 'bg-slate-200 dark:bg-slate-700': locale === 'es' }"
           @click="setLocale('es')"
         >
           ES
