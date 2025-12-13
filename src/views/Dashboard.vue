@@ -7,10 +7,10 @@
         <h1 class="text-3xl font-bold mb-4">Dashboard</h1>
         <div v-if="user" class="space-y-1">
           <p class="text-sm">
-            Usuario: <span class="font-semibold">{{ user.name || user.username }}</span>
+            Usuario: <span class="font-semibold">{{ user.username }}</span>
           </p>
-          <p v-if="user.email" class="text-sm">
-            Email: <span class="font-semibold">{{ user.email }}</span>
+          <p v-if="user.name" class="text-sm">
+            Display Name: <span class="font-semibold">{{ user.name }}</span>
           </p>
         </div>
         <div class="mt-6 flex gap-3">

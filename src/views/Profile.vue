@@ -7,12 +7,8 @@
         <h1 class="text-2xl font-bold mb-4">Profile</h1>
         <form class="space-y-3" @submit.prevent="onSubmit">
           <div>
-            <label for="name" class="block text-sm mb-1">Name</label>
-            <InputText id="name" v-model="name" class="w-full" />
-          </div>
-          <div>
-            <label for="email" class="block text-sm mb-1">Email</label>
-            <InputText id="email" v-model="email" class="w-full" />
+            <label for="displayName" class="block text-sm mb-1">Display Name</label>
+            <InputText id="displayName" v-model="displayName" class="w-full" />
           </div>
           <Button label="Save" type="submit" class="w-full" />
         </form>
@@ -29,19 +25,17 @@ import { useAuthStore } from "@/stores/auth";
 import authService from "@/domain/auth/services/authService";
 
 const store = useAuthStore();
-const name = ref(store.user?.name || "");
-const email = ref(store.user?.email || "");
+const displayName = ref(store.user?.name || "");
 
 onMounted(async () => {
   const user = await authService.getProfile();
-  store.user = { username: user.username, name: user.name, email: user.email };
-  name.value = user.name || "";
-  email.value = user.email || "";
+  store.user = { username: user.username, name: user.displayName };
+  displayName.value = user.displayName || "";
 });
 
 const onSubmit = async () => {
-  const user = await authService.updateProfile({ name: name.value, email: email.value });
-  store.user = { username: user.username, name: user.name, email: user.email };
+  const user = await authService.updateProfile({ displayName: displayName.value });
+  store.user = { username: user.username, name: user.displayName };
 };
 </script>
 

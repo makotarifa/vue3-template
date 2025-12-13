@@ -11,7 +11,7 @@ import type {
 const BASE = "/api/v1";
 
 export function register(req: RegisterRequest) {
-  return api.post<AuthResponse>(`${BASE}/register`, req, { withCredentials: true });
+  return api.post<void>(`${BASE}/register`, req, { withCredentials: true });
 }
 
 export function login(req: LoginRequest) {
@@ -23,11 +23,11 @@ export function me() {
 }
 
 export function getProfile() {
-  return api.get<User>(`${BASE}/users/profile`, { withCredentials: true });
+  return api.get<User>(`${BASE}/profile`, { withCredentials: true });
 }
 
 export function updateProfile(req: ProfileUpdateRequest) {
-  return api.put<User>(`${BASE}/users/profile`, req, { withCredentials: true });
+  return api.put<User>(`${BASE}/profile`, req, { withCredentials: true });
 }
 
 export function logout() {

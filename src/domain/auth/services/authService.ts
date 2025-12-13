@@ -8,9 +8,8 @@ import type {
   User,
 } from "../dto";
 
-export async function register(req: RegisterRequest): Promise<AuthResponse> {
-  const { data } = await authApi.register(req);
-  return data;
+export async function register(req: RegisterRequest): Promise<void> {
+  await authApi.register(req);
 }
 
 export async function login(req: LoginRequest): Promise<AuthResponse> {

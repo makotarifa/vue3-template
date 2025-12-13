@@ -35,24 +35,10 @@ export const handlers = [
   http.post("/api/v1/register", async ({ request }) => {
     const payload = (await request.json()) as unknown as { username?: string; password?: string };
     const { username, password } = payload;
-    if (!username || !password) {
-      return HttpResponse.json(
-        { title: "Bad Request", detail: "Validation failed" },
-        { status: 400 }
-      );
+    if (!username || !password || (password?.length ?? 0) < 8) {
+      return HttpResponse.json({ title: "Bad Request" }, { status: 400 });
     }
-    const token = "fake-jwt-registered";
-    const maxAge = 3600;
-    const expiresAt = new Date(Date.now() + maxAge * 1000).toISOString();
-    return HttpResponse.json(
-      { token, expiresAt, username },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Set-Cookie": `AUTH_TOKEN=${token}; HttpOnly; Path=/; Max-Age=${maxAge}`,
-        },
-      }
-    );
+    return new HttpResponse(null, { status: 204 });
   }),
 
   http.post("/api/v1/login", async ({ request }) => {
@@ -63,7 +49,7 @@ export const handlers = [
       const maxAge = 3600;
       const expiresAt = new Date(Date.now() + maxAge * 1000).toISOString();
       return HttpResponse.json(
-        { token, expiresAt, username },
+        { expiresAt, username },
         {
           headers: {
             "Content-Type": "application/json",
@@ -80,37 +66,24 @@ export const handlers = [
   http.get("/api/v1/me", async ({ request }) => {
     const cookie = request.headers.get("cookie") || "";
     if (cookie.includes("AUTH_TOKEN=")) {
-      return HttpResponse.json({
-        authenticated: true,
-        user: { id: "1", username: "user", email: "user@example.com", name: "Test User" },
-      });
+      return HttpResponse.json({ username: "user", roles: ["ROLE_USER"] });
     }
-    return HttpResponse.json({ authenticated: false }, { status: 401 });
+    return HttpResponse.json({ title: "Unauthorized" }, { status: 401 });
   }),
-  http.get("/api/v1/users/profile", async ({ request }) => {
+  http.get("/api/v1/profile", async ({ request }) => {
     const cookie = request.headers.get("cookie") || "";
     if (!cookie.includes("AUTH_TOKEN=")) {
       return HttpResponse.json({ title: "Unauthorized" }, { status: 401 });
     }
-    return HttpResponse.json({
-      id: "1",
-      username: "user",
-      email: "user@example.com",
-      name: "Test User",
-    });
+    return HttpResponse.json({ username: "user", createdAt: "2023-01-01T00:00:00Z" });
   }),
-  http.put("/api/v1/users/profile", async ({ request }) => {
+  http.put("/api/v1/profile", async ({ request }) => {
     const cookie = request.headers.get("cookie") || "";
     if (!cookie.includes("AUTH_TOKEN=")) {
       return HttpResponse.json({ title: "Unauthorized" }, { status: 401 });
     }
-    const body = (await request.json()) as { name?: string; email?: string };
-    return HttpResponse.json({
-      id: "1",
-      username: "user",
-      email: body.email || "user@example.com",
-      name: body.name || "Test User",
-    });
+    const body = (await request.json()) as { displayName?: string };
+    return HttpResponse.json({ username: "user", displayName: body.displayName || "User" });
   }),
   http.post("/api/v1/logout", async () => {
     return new HttpResponse(null, {

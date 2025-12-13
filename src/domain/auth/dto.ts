@@ -9,28 +9,23 @@ export interface LoginRequest {
 }
 
 export interface AuthResponse {
-  token: string;
   expiresAt: string;
   username: string;
-  user?: User;
 }
 
 export interface MeResponse {
-  authenticated: boolean;
-  user?: User;
+  username: string;
+  roles: string[];
 }
 
 export interface User {
-  id: string;
   username: string;
-  email?: string;
-  name?: string;
-  created_at?: string;
+  displayName?: string;
+  createdAt?: string;
 }
 
 export interface ProfileUpdateRequest {
-  name?: string;
-  email?: string;
+  displayName?: string;
 }
 
 export interface ProblemDetail {

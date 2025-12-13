@@ -15,25 +15,24 @@ export const useAuthStore = defineStore("auth", {
     async login(username: string, password: string) {
       this.loading = true;
       const data = await authService.login({ username, password });
-      this.token = data?.token || null; // do not persist; cookie is HttpOnly
-      this.user = data?.user || (data?.username ? { username: data.username } : null);
+      this.token = null;
+      this.user = data?.username ? { username: data.username } : null;
       this.loading = false;
       return data;
     },
     async register(username: string, password: string) {
       this.loading = true;
-      const data = await authService.register({ username, password });
-      // optional: auto-login semantics if backend returns token
-      this.token = data?.token || null;
-      this.user = data?.user || (data?.username ? { username: data.username } : null);
+      await authService.register({ username, password });
+      this.token = null;
+      this.user = null;
       this.loading = false;
-      return data;
+      return { success: true };
     },
     async hydrate() {
       if (this.initialized) return;
       try {
         const data = await authService.me();
-        this.user = data?.user || null;
+        this.user = data?.username ? { username: data.username } : null;
       } catch {
         this.user = null;
       } finally {
