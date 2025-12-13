@@ -18,6 +18,18 @@ export const handlers = [
       { id: 2, name: "Example 2" },
     ]);
   }),
+  http.get("/api/dummy/:id", ({ params }) => {
+    const id = Number(params.id);
+    const items = [
+      { id: 1, name: "Example 1" },
+      { id: 2, name: "Example 2" },
+    ];
+    const found = items.find((i) => i.id === id);
+    if (!found) {
+      return HttpResponse.json({ title: "Not Found" }, { status: 404 });
+    }
+    return HttpResponse.json(found);
+  }),
 
   // New API v1 endpoints for auth (mocked)
   http.post("/api/v1/register", async ({ request }) => {

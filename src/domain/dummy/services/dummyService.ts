@@ -1,4 +1,4 @@
-import api from "@/domain/common/services/http";
+import * as dummyApi from "@/domain/dummy/api/dummyApi";
 
 export interface DummyItem {
   id: number;
@@ -6,12 +6,12 @@ export interface DummyItem {
 }
 
 export async function getDummyItems(): Promise<DummyItem[]> {
-  const { data } = await api.get("/api/dummy");
+  const { data } = await dummyApi.getItems();
   return data as DummyItem[];
 }
 
 export async function getDummyById(id: number): Promise<DummyItem> {
-  const { data } = await api.get(`/api/dummy/${id}`);
+  const { data } = await dummyApi.getById(id);
   return data as DummyItem;
 }
 
