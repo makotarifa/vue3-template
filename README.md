@@ -25,8 +25,8 @@ Prerequisites:
 - Docker if you want to run the production image locally
 
 Environment (optional for dev):
-- VITE_USE_MOCKS=true to enable Mock Service Worker (MSW)
-- VITE_API_URL=https://your.api.url if you want to point to a remote backend
+- `VITE_USE_MOCKS=true` to enable Mock Service Worker (MSW)
+- `VITE_API_BASE_URL=https://your.api.url` to point to a remote backend
 
 Quick commands:
 
@@ -87,3 +87,23 @@ docker run --rm -p 5173:80 vue-template:latest
 - Add Vitest for unit/component tests if needed.
 - Add MSW for mocking APIs during tests. (Already integrated; `npm run dev:mock`.)
 - Add Dockerfile + deployment scripts (included: `Dockerfile` and `scripts/docker-publish.sh`).
+
+## Routing UX
+
+- Routes define `meta.title`; the document title is set as `"<Route> · Vue Template"`.
+- Navigation progress is shown via `nprogress` during route changes.
+- A `NotFound` view handles unknown routes, and an `Error` view shows optional messages (`/error?message=...`).
+
+## Forms
+
+- `zod` schemas and a small `vee-validate` wrapper simplify typed form validation.
+- See `src/domain/common/forms/schemas.ts` and `src/domain/common/forms/useZodForm.ts`.
+
+## API Client
+
+- Typed helpers with cancellation in `src/domain/common/api/client.ts`.
+- Use `withCancellation` to abort long requests via `AbortController`.
+
+## Playwright Artifacts
+
+- CI uploads the HTML report and trace artifacts (`playwright-report`, `test-results`).

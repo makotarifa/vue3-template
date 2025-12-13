@@ -5,7 +5,7 @@ import App from "./App.vue";
 import router from "./router";
 import PrimeVue from "primevue/config";
 import "primeicons/primeicons.css";
-import Lara from "@primevue/themes/lara";
+import Neo2025 from "./theme/neo2025";
 import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
 import setupI18n from "../i18n";
@@ -18,7 +18,7 @@ import { setupAuthGuard } from "./router/authGuard";
 setupAuthGuard(router);
 app.use(PrimeVue, {
   theme: {
-    preset: Lara,
+    preset: Neo2025,
     options: {
       prefix: "p",
       darkModeSelector: "system",
@@ -34,10 +34,8 @@ app.component("PrimeToast", Toast);
 // Start MSW in development if environment is set
 // Ensure this only runs in development builds so bundlers don't include msw
 if (import.meta.env.DEV && import.meta.env.VITE_USE_MOCKS === "true") {
-  // browser worker
-  import("../mocks/browser").then(({ worker }) => {
-    worker.start();
-  });
+  const { worker } = await import("../mocks/browser");
+  await worker.start({ serviceWorker: { url: "/mockServiceWorker.js" } });
 }
 
 // i18n
@@ -47,7 +45,6 @@ app.use(i18n);
 // global error handler
 registerErrorHandler(app);
 
-// subscribe to errors via emitter and show toast using app's useToast when mounted
-// Since we cannot use useToast here, components will listen to emitter to show toasts, AppShell will show them.
+// Components will listen to emitter to show toasts; AppShell will display them.
 
 app.mount("#app");

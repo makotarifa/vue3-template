@@ -1,19 +1,57 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+
+NProgress.configure({ showSpinner: false });
 
 const routes: RouteRecordRaw[] = [
-  { path: "/", name: "Home", component: () => import("@/views/Home.vue") },
-  { path: "/login", name: "Login", component: () => import("@/views/Login.vue") },
+  {
+    path: "/",
+    name: "Home",
+    component: () => import("@/views/Home.vue"),
+    meta: { title: "Home" },
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/Login.vue"),
+    meta: { title: "Login" },
+  },
   {
     path: "/protected",
     name: "Protected",
     component: () => import("@/views/Home.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, title: "Protected" },
+  },
+  {
+    path: "/error",
+    name: "Error",
+    component: () => import("@/views/Error.vue"),
+    meta: { title: "Error" },
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import("@/views/NotFound.vue"),
+    meta: { title: "Not Found" },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  const base = "Vue Template";
+  const title = (to.meta?.title as string | undefined) || base;
+  document.title = to.meta?.title ? `${title} · ${base}` : base;
+  next();
+});
+
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;

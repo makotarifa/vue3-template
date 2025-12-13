@@ -5,6 +5,7 @@ const prettierPlugin = require('eslint-plugin-prettier')
 const prettierConfig = require('eslint-config-prettier')
 const vueParser = require('vue-eslint-parser')
 const tsParser = require('@typescript-eslint/parser')
+const tsPlugin = require('@typescript-eslint/eslint-plugin')
 
 module.exports = [
   { ignores: ['node_modules', 'dist', 'public', '*.config.js', '*.config.cjs', '**/*.d.ts'] },
@@ -25,13 +26,18 @@ module.exports = [
         document: 'readonly',
         process: 'readonly',
         localStorage: 'readonly',
+        AbortController: 'readonly',
+        AbortSignal: 'readonly',
       },
     },
-    plugins: { prettier: prettierPlugin },
+    plugins: { prettier: prettierPlugin, '@typescript-eslint': tsPlugin },
     rules: {
       quotes: ['error', 'double', { avoidEscape: true }],
       semi: ['error', 'always'],
       'prettier/prettier': 'error',
+      // Prefer TS-aware unused vars rule
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { args: 'none', varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
     },
   },
   // Vue SFC files
@@ -44,9 +50,9 @@ module.exports = [
         ecmaVersion: 2024,
         sourceType: 'module',
       },
-      globals: { console: 'readonly', window: 'readonly', document: 'readonly', localStorage: 'readonly' },
+      globals: { console: 'readonly', window: 'readonly', document: 'readonly', localStorage: 'readonly', AbortController: 'readonly', AbortSignal: 'readonly' },
     },
-    plugins: { vue: vuePlugin, prettier: prettierPlugin },
+    plugins: { vue: vuePlugin, prettier: prettierPlugin, '@typescript-eslint': tsPlugin },
     rules: {
       'vue/multi-word-component-names': 'off',
       // Keep attributes order as per plugin recommended (avoid overriding with invalid groups)
@@ -55,6 +61,8 @@ module.exports = [
       quotes: ['error', 'double', { avoidEscape: true }],
       semi: ['error', 'always'],
       'prettier/prettier': 'error',
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { args: 'none', varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
     },
   },
   // Disable conflicting stylistic rules via eslint-config-prettier
