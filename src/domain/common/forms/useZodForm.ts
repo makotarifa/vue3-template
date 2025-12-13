@@ -8,7 +8,7 @@ export function useZodForm<T extends Record<string, unknown>>(
 ) {
   const form = useForm<T>({
     validationSchema: toTypedSchema(schema),
-    initialValues: (initialValues || {}) as T,
+    initialValues: initialValues as any,
   });
   return form;
 }
