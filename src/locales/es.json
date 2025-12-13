@@ -61,5 +61,37 @@
     "profile": "Perfil",
     "protected": "Protegida",
     "logout": "Logout"
+  },
+  "home": {
+    "tech": {
+      "vue": "Vue 3",
+      "vite": "Vite",
+      "tailwind": "Tailwind",
+      "primevue": "PrimeVue",
+      "playwright": "Playwright",
+      "msw": "MSW"
+    },
+    "mocks": {
+      "title": "Mocks",
+      "description": "MSW listo para dev y tests."
+    },
+    "e2e": {
+      "title": "E2E",
+      "description": "Playwright configurado con web server."
+    },
+    "quality": {
+      "title": "Calidad",
+      "description": "ESLint, TypeScript y CI listos."
+    },
+    "dummy": {
+      "title": "Datos dummy"
+    },
+    "quick": {
+      "title": "Comandos rápidos",
+      "dev": "Desarrollo",
+      "e2e": "E2E",
+      "lint": "Lint",
+      "build": "Build"
+    }
   }
 }

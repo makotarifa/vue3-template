@@ -1,78 +1,72 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 py-10">
+  <div
+    class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-blue-900 text-slate-50 py-10"
+  >
     <div class="max-w-5xl mx-auto px-4 lg:px-8">
       <section
-        class="relative overflow-hidden rounded-3xl border border-slate-800 bg-linear-to-br from-emerald-500/10 via-sky-500/10 to-slate-900/60 shadow-2xl p-8 lg:p-10"
+        class="relative overflow-hidden rounded-3xl border border-white/10 bg-white/10 backdrop-blur-xl shadow-2xl p-8 lg:p-10"
       >
         <div
-          class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-tight text-slate-600 dark:text-slate-200"
+          class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-tight text-slate-200"
         >
           <span
             class="rounded-full bg-emerald-500/20 px-3 py-1 text-emerald-100 border border-emerald-400/30"
           >
-            Vue 3
+            {{ t("home.tech.vue") }}
           </span>
           <span class="rounded-full bg-sky-500/20 px-3 py-1 text-sky-100 border border-sky-400/30">
-            Vite
+            {{ t("home.tech.vite") }}
           </span>
           <span
             class="rounded-full bg-indigo-500/20 px-3 py-1 text-indigo-100 border border-indigo-400/30"
           >
-            Tailwind
+            {{ t("home.tech.tailwind") }}
           </span>
           <span
             class="rounded-full bg-amber-500/20 px-3 py-1 text-amber-100 border border-amber-400/30"
           >
-            PrimeVue
+            {{ t("home.tech.primevue") }}
           </span>
           <span
             class="rounded-full bg-fuchsia-500/20 px-3 py-1 text-fuchsia-100 border border-fuchsia-400/30"
           >
-            Playwright
+            {{ t("home.tech.playwright") }}
           </span>
           <span
             class="rounded-full bg-rose-500/20 px-3 py-1 text-rose-100 border border-rose-400/30"
           >
-            MSW
+            {{ t("home.tech.msw") }}
           </span>
         </div>
 
         <div class="mt-6 space-y-4">
-          <h1 class="text-3xl lg:text-4xl font-bold leading-tight text-slate-50">
+          <h1 class="text-3xl lg:text-4xl font-bold leading-tight text-white">
             {{ t("app.title") }}
           </h1>
-          <p class="text-base lg:text-lg text-slate-200/80 max-w-3xl">
+          <p class="text-base lg:text-lg text-white/80 max-w-3xl">
             {{ t("app.subtitle") }}
           </p>
-          <p class="text-sm text-slate-300/80">{{ t("app.tailwindInfo") }}</p>
+          <p class="text-sm text-white/70">{{ t("app.tailwindInfo") }}</p>
         </div>
 
         <div class="mt-6 grid gap-4 sm:grid-cols-3">
-          <div
-            class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-4 shadow"
-          >
-            <p class="text-xs uppercase tracking-wide text-emerald-700/80 dark:text-emerald-200/80">
-              Mocks
+          <div class="rounded-2xl border border-white/10 bg-white/10 p-4 shadow">
+            <p class="text-xs uppercase tracking-wide text-emerald-200/80">
+              {{ t("home.mocks.title") }}
             </p>
-            <p class="text-sm text-slate-700 dark:text-slate-200">MSW listo para dev y tests.</p>
+            <p class="text-sm text-white/80">{{ t("home.mocks.description") }}</p>
           </div>
-          <div
-            class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-4 shadow"
-          >
-            <p class="text-xs uppercase tracking-wide text-sky-700/80 dark:text-sky-200/80">E2E</p>
-            <p class="text-sm text-slate-700 dark:text-slate-200">
-              Playwright configurado con web server.
+          <div class="rounded-2xl border border-white/10 bg-white/10 p-4 shadow">
+            <p class="text-xs uppercase tracking-wide text-sky-200/80">
+              {{ t("home.e2e.title") }}
             </p>
+            <p class="text-sm text-white/80">{{ t("home.e2e.description") }}</p>
           </div>
-          <div
-            class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-4 shadow"
-          >
-            <p class="text-xs uppercase tracking-wide text-indigo-700/80 dark:text-indigo-200/80">
-              Calidad
+          <div class="rounded-2xl border border-white/10 bg-white/10 p-4 shadow">
+            <p class="text-xs uppercase tracking-wide text-indigo-200/80">
+              {{ t("home.quality.title") }}
             </p>
-            <p class="text-sm text-slate-700 dark:text-slate-200">
-              ESLint, TypeScript y CI listos.
-            </p>
+            <p class="text-sm text-white/80">{{ t("home.quality.description") }}</p>
           </div>
         </div>
       </section>
@@ -84,7 +78,7 @@
             <div class="space-y-4">
               <div class="flex flex-wrap items-center gap-3">
                 <Button :label="t('controls.increment')" icon="pi pi-plus" @click="inc" />
-                <span class="rounded border border-slate-700 px-3 py-2 bg-slate-900/80">
+                <span class="rounded border border-white/20 px-3 py-2 bg-white/10">
                   {{ t("controls.count") }}: {{ count }}
                 </span>
               </div>
@@ -130,7 +124,7 @@
 
       <section class="mt-6 grid gap-6 lg:grid-cols-3">
         <Card class="lg:col-span-2">
-          <template #title>Dummy data</template>
+          <template #title>{{ t("home.dummy.title") }}</template>
           <template #content>
             <ul class="divide-y divide-slate-800">
               <li
@@ -146,32 +140,32 @@
         </Card>
 
         <Card>
-          <template #title>Comandos rápidos</template>
+          <template #title>{{ t("home.quick.title") }}</template>
           <template #content>
-            <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-200">
+            <ul class="space-y-2 text-sm text-white/80">
               <li
-                class="flex items-center justify-between rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-3 py-2"
+                class="flex items-center justify-between rounded border border-white/10 bg-white/10 px-3 py-2"
               >
-                <span>Desarrollo</span>
-                <code class="text-xs text-emerald-200">npm run dev</code>
+                <span>{{ t("home.quick.dev") }}</span>
+                <code class="text-xs text-emerald-200">pnpm dev</code>
               </li>
               <li
-                class="flex items-center justify-between rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-3 py-2"
+                class="flex items-center justify-between rounded border border-white/10 bg-white/10 px-3 py-2"
               >
-                <span>E2E</span>
-                <code class="text-xs text-sky-200">npx playwright test</code>
+                <span>{{ t("home.quick.e2e") }}</span>
+                <code class="text-xs text-sky-200">pnpm test:e2e</code>
               </li>
               <li
-                class="flex items-center justify-between rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-3 py-2"
+                class="flex items-center justify-between rounded border border-white/10 bg-white/10 px-3 py-2"
               >
-                <span>Lint</span>
-                <code class="text-xs text-indigo-200">npm run lint</code>
+                <span>{{ t("home.quick.lint") }}</span>
+                <code class="text-xs text-indigo-200">pnpm lint</code>
               </li>
               <li
-                class="flex items-center justify-between rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-3 py-2"
+                class="flex items-center justify-between rounded border border-white/10 bg-white/10 px-3 py-2"
               >
-                <span>Build</span>
-                <code class="text-xs text-amber-200">npm run build</code>
+                <span>{{ t("home.quick.build") }}</span>
+                <code class="text-xs text-amber-200">pnpm build</code>
               </li>
             </ul>
           </template>
@@ -188,7 +182,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { useI18n } from "vue-i18n";
 import { useCounterStore } from "@/stores/counter";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
@@ -196,6 +189,7 @@ import Checkbox from "primevue/checkbox";
 import Dialog from "primevue/dialog";
 import Card from "primevue/card";
 import { getDummyItems, DummyItem } from "@/domain/dummy/services/dummyService";
+import { useI18n } from "vue-i18n";
 
 const store = useCounterStore();
 const inc = () => store.increment();
