@@ -10,6 +10,7 @@
     "lint": "eslint \"src/**/*.{js,ts,vue}\" --ignore-pattern \"**/*.d.ts\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,ts,vue}\" --ignore-pattern \"**/*.d.ts\"",
     "format": "prettier --write \"src/**/*.{js,ts,vue,json,css,md}\"",
+    "typecheck": "tsc --noEmit",
     "prepare": "husky install",
     "dev:mock": "cross-env VITE_USE_MOCKS=true vite",
     "test:e2e": "playwright test"
@@ -66,6 +67,12 @@
   "msw": {
     "workerDirectory": [
       "public"
+    ]
+  },
+  "pnpm": {
+    "trustedDependencies": [
+      "esbuild",
+      "msw"
     ]
   }
 }
