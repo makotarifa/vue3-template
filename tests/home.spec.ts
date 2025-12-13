@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test("Home displays single title and has padding", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("locale", "en"));
   await page.goto("/");
 
   // Wait for the app to be fully loaded
