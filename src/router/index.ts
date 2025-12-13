@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
-
-NProgress.configure({ showSpinner: false });
+// Navigation UX without external progress bar
 
 const routes: RouteRecordRaw[] = [
   {
@@ -49,15 +46,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  NProgress.start();
   const base = "Vue Template";
   const title = (to.meta?.title as string | undefined) || base;
   document.title = to.meta?.title ? `${title} · ${base}` : base;
   next();
 });
 
-router.afterEach(() => {
-  NProgress.done();
-});
+router.afterEach(() => {});
 
 export default router;
