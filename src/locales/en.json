@@ -62,6 +62,9 @@
     "protected": "Protected",
     "logout": "Logout"
   },
+  "footer": {
+    "text": "© {year} · Vue Template"
+  },
   "home": {
     "tech": {
       "vue": "Vue 3",

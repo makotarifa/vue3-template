@@ -1,22 +1,24 @@
 <template>
-  <header class="p-4 bg-white dark:bg-gray-900 border-b">
-    <div class="container mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-4">
+  <header class="py-4 bg-transparent">
+    <div
+      class="max-w-5xl mx-auto px-4 lg:px-8 rounded-full border border-white/10 bg-white/10 backdrop-blur-xl shadow flex items-center justify-between"
+    >
+      <div class="flex items-center gap-3">
         <img src="/vite.svg" class="logo" alt="Vite logo" />
         <img src="/src/assets/vue.svg" class="logo vue" alt="Vue logo" />
-        <h1 class="text-lg font-semibold">{{ t("app.title") }}</h1>
+        <h1 class="text-base lg:text-lg font-semibold text-white">{{ t("app.title") }}</h1>
       </div>
       <div class="flex items-center gap-2">
         <button
-          class="px-3 py-1.5 rounded-full text-xs font-medium transition border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
-          :class="{ 'bg-slate-200 dark:bg-slate-700': locale === 'en' }"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition border border-white/20 hover:bg-white/20 text-white"
+          :class="{ 'bg-white/30': locale === 'en' }"
           @click="setLocale('en')"
         >
           EN
         </button>
         <button
-          class="px-3 py-1.5 rounded-full text-xs font-medium transition border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
-          :class="{ 'bg-slate-200 dark:bg-slate-700': locale === 'es' }"
+          class="px-3 py-1.5 rounded-full text-xs font-medium transition border border-white/20 hover:bg-white/20 text-white"
+          :class="{ 'bg-white/30': locale === 'es' }"
           @click="setLocale('es')"
         >
           ES

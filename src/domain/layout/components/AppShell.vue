@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-blue-900 text-white">
     <Header />
-    <main class="container mx-auto py-6">
+    <main class="py-8">
       <router-view />
     </main>
     <Footer />
@@ -31,8 +31,4 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
-.container {
-  max-width: 1200px;
-}
-</style>
+<style scoped></style>
