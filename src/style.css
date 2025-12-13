@@ -19,39 +19,4 @@ body {
   color: #e2e8f0;
 }
 
-.p-button {
-  border-radius: 9999px;
-}
-
-.p-card {
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.p-dialog {
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.p-dialog .p-dialog-content,
-.p-dialog .p-dialog-header,
-.p-dialog .p-dialog-footer {
-  background: transparent;
-}
-
-.p-inputtext,
-.p-password,
-.p-checkbox .p-checkbox-box {
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-}
-
-.p-inputtext::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
+/* PrimeVue styling moved to theme preset (Neo2025) */

@@ -2,6 +2,16 @@ import { definePreset } from "@primevue/themes";
 import Lara from "@primevue/themes/lara";
 
 const Neo2025 = definePreset(Lara, {
+  primitive: {
+    borderRadius: {
+      none: "0",
+      xs: "0.375rem",
+      sm: "0.5rem",
+      md: "0.75rem",
+      lg: "1rem",
+      xl: "9999px",
+    },
+  },
   semantic: {
     primary: {
       50: "#e6faff",
@@ -72,6 +82,164 @@ const Neo2025 = definePreset(Lara, {
               activeBackground: "{primary.600}",
               color: "{primary.950}",
             },
+          },
+        },
+      },
+    },
+    card: {
+      colorScheme: {
+        light: {
+          root: {
+            borderRadius: "{borderRadius.lg}",
+            background: "rgba(255,255,255,0.08)",
+            borderColor: "rgba(255,255,255,0.10)",
+          },
+        },
+        dark: {
+          root: {
+            borderRadius: "{borderRadius.lg}",
+            background: "rgba(255,255,255,0.08)",
+            borderColor: "rgba(255,255,255,0.10)",
+          },
+        },
+      },
+    },
+    dialog: {
+      colorScheme: {
+        light: {
+          root: {
+            borderRadius: "{borderRadius.lg}",
+            background: "rgba(255,255,255,0.08)",
+            borderColor: "rgba(255,255,255,0.10)",
+          },
+        },
+        dark: {
+          root: {
+            borderRadius: "{borderRadius.lg}",
+            background: "rgba(255,255,255,0.08)",
+            borderColor: "rgba(255,255,255,0.10)",
+          },
+        },
+      },
+    },
+    inputtext: {
+      colorScheme: {
+        light: {
+          root: {
+            borderRadius: "{borderRadius.md}",
+            background: "rgba(255,255,255,0.08)",
+            color: "#ffffff",
+            borderColor: "rgba(255,255,255,0.15)",
+          },
+        },
+        dark: {
+          root: {
+            borderRadius: "{borderRadius.md}",
+            background: "rgba(255,255,255,0.08)",
+            color: "#ffffff",
+            borderColor: "rgba(255,255,255,0.15)",
+          },
+        },
+      },
+    },
+    password: {
+      colorScheme: {
+        light: {
+          root: {
+            borderRadius: "{borderRadius.md}",
+            background: "rgba(255,255,255,0.08)",
+            color: "#ffffff",
+            borderColor: "rgba(255,255,255,0.15)",
+          },
+        },
+        dark: {
+          root: {
+            borderRadius: "{borderRadius.md}",
+            background: "rgba(255,255,255,0.08)",
+            color: "#ffffff",
+            borderColor: "rgba(255,255,255,0.15)",
+          },
+        },
+      },
+    },
+    checkbox: {
+      colorScheme: {
+        light: {
+          root: {
+            borderRadius: "{borderRadius.md}",
+          },
+        },
+        dark: {
+          root: {
+            borderRadius: "{borderRadius.md}",
+          },
+        },
+      },
+    },
+    tag: {
+      colorScheme: {
+        light: {
+          root: {
+            borderRadius: "{borderRadius.xl}",
+            background: "rgba(255,255,255,0.12)",
+            color: "#ffffff",
+            borderColor: "rgba(255,255,255,0.15)",
+          },
+        },
+        dark: {
+          root: {
+            borderRadius: "{borderRadius.xl}",
+            background: "rgba(255,255,255,0.12)",
+            color: "#ffffff",
+            borderColor: "rgba(255,255,255,0.15)",
+          },
+        },
+      },
+    },
+    chip: {
+      colorScheme: {
+        light: {
+          root: {
+            borderRadius: "{borderRadius.xl}",
+            background: "rgba(255,255,255,0.12)",
+            color: "#ffffff",
+            borderColor: "rgba(255,255,255,0.15)",
+          },
+        },
+        dark: {
+          root: {
+            borderRadius: "{borderRadius.xl}",
+            background: "rgba(255,255,255,0.12)",
+            color: "#ffffff",
+            borderColor: "rgba(255,255,255,0.15)",
+          },
+        },
+      },
+    },
+    selectbutton: {
+      colorScheme: {
+        light: {
+          root: {
+            borderRadius: "{borderRadius.xl}",
+          },
+        },
+        dark: {
+          root: {
+            borderRadius: "{borderRadius.xl}",
+          },
+        },
+      },
+    },
+    toggleswitch: {
+      colorScheme: {
+        light: {
+          root: {
+            borderRadius: "{borderRadius.xl}",
+          },
+        },
+        dark: {
+          root: {
+            borderRadius: "{borderRadius.xl}",
           },
         },
       },
