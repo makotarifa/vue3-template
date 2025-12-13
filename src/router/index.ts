@@ -18,6 +18,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: "Login" },
   },
   {
+    path: "/register",
+    name: "Register",
+    component: () => import("@/views/Register.vue"),
+    meta: { title: "Register" },
+  },
+  {
     path: "/protected",
     name: "Protected",
     component: () => import("@/views/Home.vue"),

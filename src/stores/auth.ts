@@ -1,31 +1,32 @@
 import { defineStore } from "pinia";
-import api from "@/domain/common/services/http";
+import authService from "@/domain/auth/services/authService";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    token:
-      (typeof localStorage !== "undefined" && localStorage.getItem("token")) ||
-      (null as string | null),
+    token: null as string | null,
     user: null as { username: string } | null,
   }),
   getters: {
-    isAuthenticated: (state) => !!state.token,
+    isAuthenticated: (state) => !!state.user,
   },
   actions: {
     async login(username: string, password: string) {
-      const { data } = await api.post("/api/auth/login", { username, password });
-      const token = data?.token;
-      if (token) {
-        this.token = token;
-        this.user = data.user || null;
-        localStorage.setItem("token", token);
-      }
+      const data = await authService.login({ username, password });
+      this.token = data?.token || null; // do not persist; cookie is HttpOnly
+      this.user = data?.username ? { username: data.username } : null;
+      return data;
+    },
+    async register(username: string, password: string) {
+      const data = await authService.register({ username, password });
+      // optional: auto-login semantics if backend returns token
+      this.token = data?.token || null;
+      this.user = data?.username ? { username: data.username } : null;
       return data;
     },
     logout() {
       this.token = null;
       this.user = null;
-      localStorage.removeItem("token");
+      // Cookie is managed by server; clearing local state is enough
     },
   },
 });
