@@ -30,6 +30,14 @@ api.interceptors.response.use(
     const message = responseMessage || errorMessage || "Network error";
     // Emit a global error
     emitter.emit("error", message);
+    const status = axiosError?.response?.status;
+    if (status === 401 || status === 403) {
+      if (typeof window !== "undefined") {
+        const current = window.location.pathname + window.location.search;
+        const redirect = encodeURIComponent(current);
+        window.location.href = `/login?redirect=${redirect}`;
+      }
+    }
     return Promise.reject(error);
   }
 );

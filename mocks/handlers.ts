@@ -68,8 +68,43 @@ export const handlers = [
   http.get("/api/v1/me", async ({ request }) => {
     const cookie = request.headers.get("cookie") || "";
     if (cookie.includes("AUTH_TOKEN=")) {
-      return HttpResponse.json({ username: "user" });
+      return HttpResponse.json({
+        authenticated: true,
+        user: { id: "1", username: "user", email: "user@example.com", name: "Test User" },
+      });
     }
-    return HttpResponse.json({ title: "Unauthorized", detail: "Not logged in" }, { status: 401 });
+    return HttpResponse.json({ authenticated: false }, { status: 401 });
+  }),
+  http.get("/api/v1/users/profile", async ({ request }) => {
+    const cookie = request.headers.get("cookie") || "";
+    if (!cookie.includes("AUTH_TOKEN=")) {
+      return HttpResponse.json({ title: "Unauthorized" }, { status: 401 });
+    }
+    return HttpResponse.json({
+      id: "1",
+      username: "user",
+      email: "user@example.com",
+      name: "Test User",
+    });
+  }),
+  http.put("/api/v1/users/profile", async ({ request }) => {
+    const cookie = request.headers.get("cookie") || "";
+    if (!cookie.includes("AUTH_TOKEN=")) {
+      return HttpResponse.json({ title: "Unauthorized" }, { status: 401 });
+    }
+    const body = (await request.json()) as { name?: string; email?: string };
+    return HttpResponse.json({
+      id: "1",
+      username: "user",
+      email: body.email || "user@example.com",
+      name: body.name || "Test User",
+    });
+  }),
+  http.post("/api/v1/logout", async () => {
+    return new HttpResponse(null, {
+      headers: {
+        "Set-Cookie": "AUTH_TOKEN=; Path=/; Max-Age=0",
+      },
+    });
   }),
 ];

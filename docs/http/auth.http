@@ -7,7 +7,7 @@ Content-Type: application/json
   "password": "password123"
 }
 
-###
+### 
 # Login (receives HttpOnly cookie)
 POST http://localhost:8080/api/v1/login
 Content-Type: application/json
@@ -16,6 +16,28 @@ Content-Type: application/json
   "username": "user",
   "password": "password123"
 }
+
+###
+# Verify Authentication
+GET http://localhost:8080/api/v1/me
+
+###
+# Get Profile (Protected)
+GET http://localhost:8080/api/v1/users/profile
+
+###
+# Update Profile (Protected)
+PUT http://localhost:8080/api/v1/users/profile
+Content-Type: application/json
+
+{
+  "name": "Updated Name",
+  "email": "updated@example.com"
+}
+
+###
+# Logout
+POST http://localhost:8080/api/v1/logout
 
 ###
 # OAuth client_credentials (if applicable)
