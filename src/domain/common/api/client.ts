@@ -9,7 +9,7 @@ export type ApiResult<T> = {
 export type RequestConfig = {
   url: string;
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
   data?: unknown;
   headers?: Record<string, string>;
   signal?: AbortSignal;
@@ -27,7 +27,7 @@ export async function request<T>(config: RequestConfig): Promise<ApiResult<T>> {
 
 export function createApiClient(basePath = "") {
   return {
-    get<T>(path: string, params?: Record<string, any>, signal?: AbortSignal) {
+    get<T>(path: string, params?: Record<string, unknown>, signal?: AbortSignal) {
       return request<T>({ url: `${basePath}${path}`, method: "GET", params, signal });
     },
     post<T>(path: string, body?: unknown, signal?: AbortSignal) {

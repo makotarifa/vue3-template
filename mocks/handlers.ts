@@ -21,7 +21,8 @@ export const handlers = [
 
   // New API v1 endpoints for auth (mocked)
   http.post("/api/v1/register", async ({ request }) => {
-    const { username, password } = (await request.json()) as any;
+    const payload = (await request.json()) as unknown as { username?: string; password?: string };
+    const { username, password } = payload;
     if (!username || !password) {
       return HttpResponse.json(
         { title: "Bad Request", detail: "Validation failed" },
@@ -29,31 +30,32 @@ export const handlers = [
       );
     }
     const token = "fake-jwt-registered";
-    return new HttpResponse(
-      JSON.stringify({ token, expiresAt: new Date(Date.now() + 3600_000).toISOString(), username }),
+    const maxAge = 3600;
+    const expiresAt = new Date(Date.now() + maxAge * 1000).toISOString();
+    return HttpResponse.json(
+      { token, expiresAt, username },
       {
         headers: {
           "Content-Type": "application/json",
-          "Set-Cookie": `AUTH_TOKEN=${token}; HttpOnly; Path=/; Max-Age=3600`,
+          "Set-Cookie": `AUTH_TOKEN=${token}; HttpOnly; Path=/; Max-Age=${maxAge}`,
         },
       }
     );
   }),
 
   http.post("/api/v1/login", async ({ request }) => {
-    const { username, password } = (await request.json()) as any;
+    const payload = (await request.json()) as unknown as { username?: string; password?: string };
+    const { username, password } = payload;
     if (username === "user" && password && password.length >= 8) {
       const token = "fake-jwt-login";
-      return new HttpResponse(
-        JSON.stringify({
-          token,
-          expiresAt: new Date(Date.now() + 3600_000).toISOString(),
-          username,
-        }),
+      const maxAge = 3600;
+      const expiresAt = new Date(Date.now() + maxAge * 1000).toISOString();
+      return HttpResponse.json(
+        { token, expiresAt, username },
         {
           headers: {
             "Content-Type": "application/json",
-            "Set-Cookie": `AUTH_TOKEN=${token}; HttpOnly; Path=/; Max-Age=3600`,
+            "Set-Cookie": `AUTH_TOKEN=${token}; HttpOnly; Path=/; Max-Age=${maxAge}`,
           },
         }
       );
@@ -62,5 +64,12 @@ export const handlers = [
       { title: "Unauthorized", detail: "Invalid credentials" },
       { status: 401 }
     );
+  }),
+  http.get("/api/v1/me", async ({ request }) => {
+    const cookie = request.headers.get("cookie") || "";
+    if (cookie.includes("AUTH_TOKEN=")) {
+      return HttpResponse.json({ username: "user" });
+    }
+    return HttpResponse.json({ title: "Unauthorized", detail: "Not logged in" }, { status: 401 });
   }),
 ];

@@ -2,12 +2,18 @@ import { Router } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 
 export function setupAuthGuard(router: Router) {
-  router.beforeEach((to, from, next) => {
+  router.beforeEach(async (to) => {
     const auth = useAuthStore();
-    const requiresAuth = to.meta?.requiresAuth as boolean;
-    if (requiresAuth && !auth.isAuthenticated) {
-      return next({ name: "Login" });
+    const requiresAuth = !!(to.meta?.requiresAuth as boolean);
+
+    if (!auth.initialized) {
+      await auth.hydrate();
     }
-    next();
+
+    if (requiresAuth && !auth.isAuthenticated) {
+      return { name: "Login", query: { redirect: to.fullPath } };
+    }
+
+    return true;
   });
 }

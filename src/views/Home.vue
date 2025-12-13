@@ -228,8 +228,7 @@ const submitForm = () => {
     formErrors.value.push(t("controls.formNameRequired"));
     return;
   }
-  // Example success
-  console.log(`Form submitted: ${formName.value}`);
+  formName.value = "";
 };
 </script>
 

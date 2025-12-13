@@ -14,6 +14,10 @@ export interface AuthResponse {
   username: string;
 }
 
+export interface MeResponse {
+  username: string;
+}
+
 export interface ProblemDetail {
   type?: string;
   title?: string;

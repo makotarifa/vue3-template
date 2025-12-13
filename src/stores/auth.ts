@@ -5,6 +5,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: null as string | null,
     user: null as { username: string } | null,
+    initialized: false,
   }),
   getters: {
     isAuthenticated: (state) => !!state.user,
@@ -23,6 +24,18 @@ export const useAuthStore = defineStore("auth", {
       this.user = data?.username ? { username: data.username } : null;
       return data;
     },
+    async hydrate() {
+      if (this.initialized) return;
+      try {
+        const data = await authService.me();
+        this.user = data?.username ? { username: data.username } : null;
+      } catch {
+        this.user = null;
+      } finally {
+        this.initialized = true;
+      }
+    },
+
     logout() {
       this.token = null;
       this.user = null;
