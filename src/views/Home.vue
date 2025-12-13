@@ -1,11 +1,11 @@
 <template>
-  <div class="min-h-screen bg-slate-950 text-slate-50 py-10">
+  <div class="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 py-10">
     <div class="max-w-5xl mx-auto px-4 lg:px-8">
       <section
         class="relative overflow-hidden rounded-3xl border border-slate-800 bg-linear-to-br from-emerald-500/10 via-sky-500/10 to-slate-900/60 shadow-2xl p-8 lg:p-10"
       >
         <div
-          class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-tight text-slate-200"
+          class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-tight text-slate-600 dark:text-slate-200"
         >
           <span
             class="rounded-full bg-emerald-500/20 px-3 py-1 text-emerald-100 border border-emerald-400/30"
@@ -48,17 +48,31 @@
         </div>
 
         <div class="mt-6 grid gap-4 sm:grid-cols-3">
-          <div class="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow">
-            <p class="text-xs uppercase tracking-wide text-emerald-200/80">Mocks</p>
-            <p class="text-sm text-slate-200">MSW listo para dev y tests.</p>
+          <div
+            class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-4 shadow"
+          >
+            <p class="text-xs uppercase tracking-wide text-emerald-700/80 dark:text-emerald-200/80">
+              Mocks
+            </p>
+            <p class="text-sm text-slate-700 dark:text-slate-200">MSW listo para dev y tests.</p>
           </div>
-          <div class="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow">
-            <p class="text-xs uppercase tracking-wide text-sky-200/80">E2E</p>
-            <p class="text-sm text-slate-200">Playwright configurado con web server.</p>
+          <div
+            class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-4 shadow"
+          >
+            <p class="text-xs uppercase tracking-wide text-sky-700/80 dark:text-sky-200/80">E2E</p>
+            <p class="text-sm text-slate-700 dark:text-slate-200">
+              Playwright configurado con web server.
+            </p>
           </div>
-          <div class="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow">
-            <p class="text-xs uppercase tracking-wide text-indigo-200/80">Calidad</p>
-            <p class="text-sm text-slate-200">ESLint, TypeScript y CI listos.</p>
+          <div
+            class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-4 shadow"
+          >
+            <p class="text-xs uppercase tracking-wide text-indigo-700/80 dark:text-indigo-200/80">
+              Calidad
+            </p>
+            <p class="text-sm text-slate-700 dark:text-slate-200">
+              ESLint, TypeScript y CI listos.
+            </p>
           </div>
         </div>
       </section>
@@ -134,27 +148,27 @@
         <Card>
           <template #title>Comandos rápidos</template>
           <template #content>
-            <ul class="space-y-2 text-sm text-slate-200">
+            <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-200">
               <li
-                class="flex items-center justify-between rounded border border-slate-800 bg-slate-900/80 px-3 py-2"
+                class="flex items-center justify-between rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-3 py-2"
               >
                 <span>Desarrollo</span>
                 <code class="text-xs text-emerald-200">npm run dev</code>
               </li>
               <li
-                class="flex items-center justify-between rounded border border-slate-800 bg-slate-900/80 px-3 py-2"
+                class="flex items-center justify-between rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-3 py-2"
               >
                 <span>E2E</span>
                 <code class="text-xs text-sky-200">npx playwright test</code>
               </li>
               <li
-                class="flex items-center justify-between rounded border border-slate-800 bg-slate-900/80 px-3 py-2"
+                class="flex items-center justify-between rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-3 py-2"
               >
                 <span>Lint</span>
                 <code class="text-xs text-indigo-200">npm run lint</code>
               </li>
               <li
-                class="flex items-center justify-between rounded border border-slate-800 bg-slate-900/80 px-3 py-2"
+                class="flex items-center justify-between rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-3 py-2"
               >
                 <span>Build</span>
                 <code class="text-xs text-amber-200">npm run build</code>
