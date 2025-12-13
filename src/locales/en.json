@@ -18,5 +18,48 @@
     "namePlaceholder": "Name",
     "fullNamePlaceholder": "Full name",
     "formNameRequired": "Form name is required"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "subtitle": "Sign in with your username and password",
+      "submit": "Sign in"
+    },
+    "register": {
+      "title": "Register",
+      "submit": "Create account"
+    },
+    "username": "Username",
+    "password": "Password"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "user": "User",
+    "displayName": "Display Name"
+  },
+  "profile": {
+    "title": "Profile",
+    "displayName": "Display Name",
+    "save": "Save"
+  },
+  "error": {
+    "title": "Error",
+    "unexpected": "An unexpected error occurred.",
+    "goHome": "Go Home"
+  },
+  "notFound": {
+    "title": "404 · Not Found",
+    "description": "The page you are looking for doesn’t exist.",
+    "goHome": "Go Home",
+    "login": "Login"
+  },
+  "logout": {
+    "title": "Logging out...",
+    "wait": "Please wait"
+  },
+  "nav": {
+    "profile": "Profile",
+    "protected": "Protected",
+    "logout": "Logout"
   }
 }

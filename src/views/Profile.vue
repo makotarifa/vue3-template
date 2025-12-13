@@ -1,18 +1,26 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 py-10">
-    <div class="max-w-xl mx-auto px-4 lg:px-8">
-      <section
-        class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 shadow"
-      >
-        <h1 class="text-2xl font-bold mb-4">Profile</h1>
-        <form class="space-y-3" @submit.prevent="onSubmit">
+  <div
+    class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-900 to-blue-900"
+  >
+    <div class="w-full max-w-md px-6">
+      <div class="rounded-2xl border border-white/10 bg-white/10 backdrop-blur-xl shadow-2xl">
+        <div class="px-6 pt-6">
+          <h1 class="text-xl font-semibold text-white">{{ t("profile.title") }}</h1>
+        </div>
+        <form class="px-6 pb-6 pt-4 space-y-4" @submit.prevent="onSubmit">
           <div>
-            <label for="displayName" class="block text-sm mb-1">Display Name</label>
-            <InputText id="displayName" v-model="displayName" class="w-full" />
+            <label for="displayName" class="block text-sm text-white/80 mb-1">{{
+              t("profile.displayName")
+            }}</label>
+            <InputText
+              id="displayName"
+              v-model="displayName"
+              class="w-full rounded-lg bg-white/10 text-white placeholder-white/50 border border-white/20 px-3 py-2"
+            />
           </div>
-          <Button label="Save" type="submit" class="w-full" />
+          <Button :label="t('profile.save')" type="submit" class="w-full" />
         </form>
-      </section>
+      </div>
     </div>
   </div>
 </template>
@@ -23,9 +31,11 @@ import Button from "primevue/button";
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import authService from "@/domain/auth/services/authService";
+import { useI18n } from "vue-i18n";
 
 const store = useAuthStore();
 const displayName = ref(store.user?.name || "");
+const { t } = useI18n();
 
 onMounted(async () => {
   const user = await authService.getProfile();
