@@ -40,14 +40,15 @@ jobs:
                 core.setOutput('ready', 'false')
                 return
               }
-              const pending = runs.filter(cr => cr.status !== 'completed')
+              const pending = runs.filter(cr => cr.status !== 'completed' && !cr.name.includes('Dependabot Auto Merge') && !cr.name.includes('automerge'))
               const statuses = await github.rest.repos.getCombinedStatusForRef({ owner, repo, ref: sha })
               const state = statuses.data.state // success | failure | pending
               if (state === 'failure') {
                 core.setOutput('ready', 'false')
                 return
               }
-              if (pending.length === 0 && state === 'success') {
+              // Si no hay pendientes externos y el estado es success (o pending solo por nosotros)
+              if (pending.length === 0) {
                 core.setOutput('ready', 'true')
                 return
               }
