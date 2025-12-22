@@ -26,7 +26,8 @@ jobs:
 
       - name: Read pnpm version from package.json
         id: read-package-manager
-        run: echo "pnpm_version=$(node -p \"(require('./package.json').packageManager||'pnpm@10.25.0').split('@')[1]\")" >> "$GITHUB_OUTPUT"
+        run: |
+          echo pnpm_version=$(node -e 'const pm=require("./package.json").packageManager||"pnpm@10.25.0"; console.log(pm.split("@")[1]);') >> $GITHUB_OUTPUT
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
