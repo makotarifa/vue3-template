@@ -15,6 +15,12 @@ jobs:
     env:
       DEPENDABOT_AUTOMERGE_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
     steps:
+      - name: Token path (diagnostic)
+        if: ${{ steps.patcheck.outputs.valid == 'true' }}
+        run: echo "Using DEPENDABOT_AUTOMERGE_TOKEN (PAT) for auto-merge"
+      - name: Token path (diagnostic fallback)
+        if: ${{ steps.patcheck.outputs.valid != 'true' }}
+        run: echo "Using GITHUB_TOKEN for auto-merge"
       - name: Validate PAT
         id: patcheck
         shell: bash
