@@ -17,7 +17,6 @@ jobs:
       group: auto-deps-minor
       cancel-in-progress: true
     env:
-      PR_TOKEN: ${{ secrets.PR_TOKEN }}
       DEPENDABOT_AUTOMERGE_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
 
     steps:
@@ -80,60 +79,30 @@ jobs:
               }
             }
 
-      - name: Validate PR_TOKEN
-        id: prtoken
-        shell: bash
-        run: |
-          if [ -n "$PR_TOKEN" ]; then
-            code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $PR_TOKEN" https://api.github.com/user)
-            if [ "$code" = "200" ]; then
-              echo "valid=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "valid=false" >> "$GITHUB_OUTPUT"
-            fi
-          else
-            echo "valid=false" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Validate DEPENDABOT_AUTOMERGE_TOKEN
         id: datoken
         shell: bash
         run: |
-          if [ -n "$DEPENDABOT_AUTOMERGE_TOKEN" ]; then
-            code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $DEPENDABOT_AUTOMERGE_TOKEN" https://api.github.com/user)
-            if [ "$code" = "200" ]; then
-              echo "valid=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "valid=false" >> "$GITHUB_OUTPUT"
-            fi
+          if [ -z "$DEPENDABOT_AUTOMERGE_TOKEN" ]; then
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            echo "DEPENDABOT_AUTOMERGE_TOKEN no definido" >&2
+            exit 1
+          fi
+          user_code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $DEPENDABOT_AUTOMERGE_TOKEN" https://api.github.com/user)
+          repo_code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $DEPENDABOT_AUTOMERGE_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}")
+          if [ "$user_code" = "200" ] && [ "$repo_code" = "200" ]; then
+            echo "valid=true" >> "$GITHUB_OUTPUT"
           else
             echo "valid=false" >> "$GITHUB_OUTPUT"
+            echo "DEPENDABOT_AUTOMERGE_TOKEN inválido o sin acceso al repo" >&2
+            exit 1
           fi
 
-      - name: Create Pull Request (using PAT if provided)
-        if: ${{ steps.prtoken.outputs.valid == 'true' }}
+      - name: Create Pull Request (DEPENDABOT token obligatorio)
+        if: ${{ steps.datoken.outputs.valid == 'true' }}
         id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ env.PR_TOKEN }}
-          branch: chore/auto-deps-minor
-          title: 'chore(deps): auto minor/patch updates'
-          commit-message: 'chore(deps): auto minor/patch updates via pnpm update'
-          add-paths: |
-            pnpm-lock.yaml
-            package.json
-          body: |
-            Actualización automática de dependencias a versiones minor/patch compatibles según rangos semver definidos en `package.json`.
-            La pipeline ejecuta `lint`, `typecheck`, `build` y pruebas E2E para garantizar que no se rompa nada.
-          labels: dependencies, automated
-          signoff: true
-          delete-branch: true
-
-      - name: Create Pull Request (using DEPENDABOT_AUTOMERGE_TOKEN)
-        if: ${{ steps.datoken.outputs.valid == 'true' && steps.cpr.outputs.pull-request-number == '' }}
-        id: cpr_pat
-        uses: peter-evans/create-pull-request@v6
-        with:
           token: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN }}
           branch: chore/auto-deps-minor
           title: 'chore(deps): auto minor/patch updates'
@@ -148,42 +117,10 @@ jobs:
           signoff: true
           delete-branch: true
 
-      - name: Create Pull Request (default token)
-        if: ${{ steps.cpr.outputs.pull-request-number == '' }}
-        id: cpr_fallback
-        uses: peter-evans/create-pull-request@v6
-        with:
-          branch: chore/auto-deps-minor
-          title: 'chore(deps): auto minor/patch updates'
-          commit-message: 'chore(deps): auto minor/patch updates via pnpm update'
-          add-paths: |
-            pnpm-lock.yaml
-            package.json
-          body: |
-            Actualización automática de dependencias a versiones minor/patch compatibles según rangos semver definidos en `package.json`.
-            La pipeline ejecuta `lint`, `typecheck`, `build` y pruebas E2E para garantizar que no se rompa nada.
-          labels: dependencies, automated
-          signoff: true
-          delete-branch: true
-
-      - name: Enable GitHub Auto-Merge on PR (PAT)
-        if: ${{ steps.cpr.outputs.pull-request-number && success() }}
+      - name: Enable GitHub Auto-Merge on PR (DEPENDABOT token)
+        if: ${{ steps.cpr.outputs.pull-request-number && success() && steps.datoken.outputs.valid == 'true' }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
+          token: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: squash
-
-      - name: Enable GitHub Auto-Merge on PR (DEPENDABOT PAT)
-        if: ${{ steps.cpr_pat.outputs.pull-request-number && success() && steps.datoken.outputs.valid == 'true' }}
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          token: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN }}
-          pull-request-number: ${{ steps.cpr_pat.outputs.pull-request-number }}
-          merge-method: squash
-
-      - name: Enable GitHub Auto-Merge on PR (fallback)
-        if: ${{ steps.cpr_fallback.outputs.pull-request-number && success() }}
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          pull-request-number: ${{ steps.cpr_fallback.outputs.pull-request-number }}
           merge-method: squash
