@@ -15,8 +15,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0(vue@3.5.25(typescript@5.9.3))
       '@primevue/themes':
-        specifier: ^4.5.1
-        version: 4.5.3
+        specifier: ^4.5.4
+        version: 4.5.4
       '@vee-validate/zod':
         specifier: ^4.15.1
         version: 4.15.1(vue@3.5.25(typescript@5.9.3))(zod@3.25.76)
@@ -492,8 +492,8 @@ packages:
     resolution: {integrity: sha512-apCmY/u7bas9AA1cXZ6G+n5Izpl2V/8i3740uzPFXzEw946V+BSalfkPpjGqjmtO/qGPCF2acTa1+3qK//hQWw==}
     engines: {node: '>=12.11.0'}
 
-  '@primevue/themes@4.5.3':
-    resolution: {integrity: sha512-h5z4BVQkKkqv9sHjrPc742Oej58v4LOgrTm2btjCMwG+277faAg/o0+YimmQT24/iXbtmc5Lt+yh4d/yOVJtRA==}
+  '@primevue/themes@4.5.4':
+    resolution: {integrity: sha512-rUFZxMHLanTZdvZq4zgZPk+KRBZ3s7fE3bBK32OrZBkHQhEJmkJ7Ftd4w4QFlXyz1B7c+k5invZiOOCjwHXg9Q==}
     engines: {node: '>=12.11.0'}
 
   '@rolldown/pluginutils@1.0.0-beta.53':
@@ -2331,7 +2331,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  '@primevue/themes@4.5.3':
+  '@primevue/themes@4.5.4':
     dependencies:
       '@primeuix/styled': 0.7.4
       '@primeuix/themes': 2.0.2
