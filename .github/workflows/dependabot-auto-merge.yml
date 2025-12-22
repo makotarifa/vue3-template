@@ -36,17 +36,19 @@ jobs:
               const runs = res.data.check_runs
               const failed = runs.filter(cr => ['failure','cancelled','timed_out','action_required'].includes(cr.conclusion))
               if (failed.length > 0) {
-                core.setFailed('Required checks failing')
+                core.setOutput('ready', 'false')
                 return
               }
               const pending = runs.filter(cr => cr.status !== 'completed')
               if (pending.length === 0) {
+                core.setOutput('ready', 'true')
                 return
               }
               await new Promise(r => setTimeout(r, 20000))
             }
-            core.setFailed('Timeout waiting for checks to complete')
+            core.setOutput('ready', 'false')
       - uses: ahmadnassri/action-dependabot-auto-merge@v2
+        if: ${{ steps.waitchecks.outputs.ready == 'true' }}
         with:
           github-token: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
           target: minor
