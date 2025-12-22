@@ -38,6 +38,12 @@ jobs:
           else
             echo "valid=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Token path (diagnostic)
+        if: ${{ steps.patcheck.outputs.valid == 'true' }}
+        run: echo "Using DEPENDABOT_AUTOMERGE_TOKEN (PAT) for auto-merge"
+      - name: Token path (diagnostic fallback)
+        if: ${{ steps.patcheck.outputs.valid != 'true' }}
+        run: echo "Using GITHUB_TOKEN for auto-merge"
       - name: Check PR checks status
         id: checks
         uses: actions/github-script@v7
