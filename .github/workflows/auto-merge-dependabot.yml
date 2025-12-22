@@ -1,15 +1,16 @@
 name: Enable Auto-Merge for Dependabot PRs
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, ready_for_review]
 
 permissions:
   pull-requests: write
+  contents: write
 
 jobs:
   enable:
-    if: github.actor == 'dependabot[bot]'
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Enable GitHub Auto-Merge
@@ -17,4 +18,3 @@ jobs:
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
-

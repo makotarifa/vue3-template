@@ -13,6 +13,9 @@ jobs:
   update-deps:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    concurrency:
+      group: auto-deps-minor
+      cancel-in-progress: true
 
     steps:
       - name: Checkout
@@ -28,6 +31,9 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
+
+      - name: Enable corepack
+        run: corepack enable
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -67,7 +73,22 @@ jobs:
           signoff: true
           delete-branch: true
 
+      - name: Ensure labels exist
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = ['dependencies', 'automated']
+            for (const name of labels) {
+              try {
+                await github.rest.issues.getLabel({ owner: context.repo.owner, repo: context.repo.repo, name })
+              } catch (e) {
+                await github.rest.issues.createLabel({ owner: context.repo.owner, repo: context.repo.repo, name, color: 'a2eeef' })
+              }
+            }
+
       - name: Enable GitHub Auto-Merge on PR
+        if: ${{ steps.cpr.outputs.pull-request-number }}
         uses: peter-evans/enable-pull-request-automerge@v4
         with:
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
