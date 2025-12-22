@@ -2,7 +2,7 @@ name: Enable Auto-Merge for Dependabot PRs
 
 on:
   pull_request_target:
-    types: [opened, ready_for_review]
+    types: [opened, synchronize, reopened, ready_for_review, labeled]
 
 permissions:
   pull-requests: write
@@ -54,8 +54,34 @@ jobs:
             const failing = res.data.check_runs.filter(cr => ['failure','cancelled','timed_out','action_required'].includes(cr.conclusion))
             core.setOutput('ok', failing.length === 0 ? 'true' : 'false')
 
+      - name: Wait until checks are successful
+        id: waitchecks
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner
+            const repo = context.repo.repo
+            const sha = context.payload.pull_request.head.sha
+            const maxTries = 60
+            for (let i = 0; i < maxTries; i++) {
+              const res = await github.rest.checks.listForRef({ owner, repo, ref: sha })
+              const runs = res.data.check_runs
+              const failed = runs.filter(cr => ['failure','cancelled','timed_out','action_required'].includes(cr.conclusion))
+              if (failed.length > 0) {
+                core.setFailed('Required checks failing')
+                return
+              }
+              const pending = runs.filter(cr => cr.status !== 'completed')
+              if (pending.length === 0) {
+                core.setOutput('ready', 'true')
+                return
+              }
+              await new Promise(r => setTimeout(r, 20000))
+            }
+            core.setFailed('Timeout waiting for checks to complete')
+
       - name: Enable Auto-Merge (PAT)
-        if: ${{ steps.checks.outputs.ok == 'true' && steps.patcheck.outputs.valid == 'true' }}
+        if: ${{ steps.waitchecks.outputs.ready == 'true' && steps.patcheck.outputs.valid == 'true' }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN }}
@@ -63,7 +89,7 @@ jobs:
           merge-method: squash
 
       - name: Enable Auto-Merge (GITHUB_TOKEN)
-        if: ${{ steps.checks.outputs.ok == 'true' && steps.patcheck.outputs.valid != 'true' }}
+        if: ${{ steps.waitchecks.outputs.ready == 'true' && steps.patcheck.outputs.valid != 'true' }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
