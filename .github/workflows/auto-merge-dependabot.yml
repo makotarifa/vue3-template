@@ -26,8 +26,11 @@ jobs:
         shell: bash
         run: |
           if [ -n "$DEPENDABOT_AUTOMERGE_TOKEN" ]; then
-            code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $DEPENDABOT_AUTOMERGE_TOKEN" https://api.github.com/user)
-            if [ "$code" = "200" ]; then
+            # Check token is valid
+            user_code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $DEPENDABOT_AUTOMERGE_TOKEN" https://api.github.com/user)
+            # Check token has access to this repository
+            repo_code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $DEPENDABOT_AUTOMERGE_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}")
+            if [ "$user_code" = "200" ] && [ "$repo_code" = "200" ]; then
               echo "valid=true" >> "$GITHUB_OUTPUT"
             else
               echo "valid=false" >> "$GITHUB_OUTPUT"
