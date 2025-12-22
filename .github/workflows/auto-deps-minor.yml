@@ -80,8 +80,38 @@ jobs:
               }
             }
 
+      - name: Validate PR_TOKEN
+        id: prtoken
+        shell: bash
+        run: |
+          if [ -n "$PR_TOKEN" ]; then
+            code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $PR_TOKEN" https://api.github.com/user)
+            if [ "$code" = "200" ]; then
+              echo "valid=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "valid=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate DEPENDABOT_AUTOMERGE_TOKEN
+        id: datoken
+        shell: bash
+        run: |
+          if [ -n "$DEPENDABOT_AUTOMERGE_TOKEN" ]; then
+            code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $DEPENDABOT_AUTOMERGE_TOKEN" https://api.github.com/user)
+            if [ "$code" = "200" ]; then
+              echo "valid=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "valid=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create Pull Request (using PAT if provided)
-        if: ${{ env.PR_TOKEN != '' }}
+        if: ${{ steps.prtoken.outputs.valid == 'true' }}
         id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
@@ -100,7 +130,7 @@ jobs:
           delete-branch: true
 
       - name: Create Pull Request (using DEPENDABOT_AUTOMERGE_TOKEN)
-        if: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN != '' && steps.cpr.outputs.pull-request-number == '' }}
+        if: ${{ steps.datoken.outputs.valid == 'true' && steps.cpr.outputs.pull-request-number == '' }}
         id: cpr_pat
         uses: peter-evans/create-pull-request@v6
         with:
@@ -144,7 +174,7 @@ jobs:
           merge-method: squash
 
       - name: Enable GitHub Auto-Merge on PR (DEPENDABOT PAT)
-        if: ${{ steps.cpr_pat.outputs.pull-request-number && success() }}
+        if: ${{ steps.cpr_pat.outputs.pull-request-number && success() && steps.datoken.outputs.valid == 'true' }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN }}
