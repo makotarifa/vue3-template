@@ -1,0 +1,99 @@
+name: Auto Minor Dependency Updates
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-deps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: auto-deps-minor
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Read pnpm version from package.json
+        id: read-package-manager
+        run: echo "pnpm_version=$(node -p \"(require('./package.json').packageManager||'pnpm@10.25.0').split('@')[1]\")" >> "$GITHUB_OUTPUT"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ steps.read-package-manager.outputs.pnpm_version }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Update dependencies (minor/patch per semver)
+        run: pnpm update -r
+
+      - name: Reinstall after update
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps
+
+      - name: Run E2E tests
+        run: pnpm test:e2e
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/auto-deps-minor
+          title: 'chore(deps): auto minor/patch updates'
+          commit-message: 'chore(deps): auto minor/patch updates via pnpm update'
+          body: |
+            Actualización automática de dependencias a versiones minor/patch compatibles según rangos semver definidos en `package.json`.
+            La pipeline ejecuta `lint`, `typecheck`, `build` y pruebas E2E para garantizar que no se rompa nada.
+          labels: dependencies, automated
+          signoff: true
+          delete-branch: true
+
+      - name: Ensure labels exist
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = ['dependencies', 'automated']
+            for (const name of labels) {
+              try {
+                await github.rest.issues.getLabel({ owner: context.repo.owner, repo: context.repo.repo, name })
+              } catch (e) {
+                await github.rest.issues.createLabel({ owner: context.repo.owner, repo: context.repo.repo, name, color: 'a2eeef' })
+              }
+            }
+
+      - name: Enable GitHub Auto-Merge on PR
+        if: ${{ steps.cpr.outputs.pull-request-number && success() }}
+        uses: peter-evans/enable-pull-request-automerge@v4
+        with:
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
