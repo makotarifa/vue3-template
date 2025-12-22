@@ -23,8 +23,16 @@ jobs:
             const failing = res.data.check_runs.filter(cr => ['failure','cancelled','timed_out','action_required'].includes(cr.conclusion))
             core.setOutput('ok', failing.length === 0 ? 'true' : 'false')
 
-      - name: Enable GitHub Auto-Merge
-        if: ${{ steps.checks.outputs.ok == 'true' }}
+      - name: Enable Auto-Merge (PAT)
+        if: ${{ steps.checks.outputs.ok == 'true' && secrets.DEPENDABOT_AUTOMERGE_TOKEN != '' }}
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
+
+      - name: Enable Auto-Merge (GITHUB_TOKEN)
+        if: ${{ steps.checks.outputs.ok == 'true' && (secrets.DEPENDABOT_AUTOMERGE_TOKEN == '' ) }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           pull-request-number: ${{ github.event.pull_request.number }}

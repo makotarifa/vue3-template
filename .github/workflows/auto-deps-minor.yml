@@ -96,6 +96,25 @@ jobs:
           signoff: true
           delete-branch: true
 
+      - name: Create Pull Request (using DEPENDABOT_AUTOMERGE_TOKEN)
+        if: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN != '' && steps.cpr.outputs.pull-request-number == '' }}
+        id: cpr_pat
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+          branch: chore/auto-deps-minor
+          title: 'chore(deps): auto minor/patch updates'
+          commit-message: 'chore(deps): auto minor/patch updates via pnpm update'
+          add-paths: |
+            pnpm-lock.yaml
+            package.json
+          body: |
+            Actualización automática de dependencias a versiones minor/patch compatibles según rangos semver definidos en `package.json`.
+            La pipeline ejecuta `lint`, `typecheck`, `build` y pruebas E2E para garantizar que no se rompa nada.
+          labels: dependencies, automated
+          signoff: true
+          delete-branch: true
+
       - name: Create Pull Request (default token)
         if: ${{ steps.cpr.outputs.pull-request-number == '' }}
         id: cpr_fallback
@@ -119,6 +138,14 @@ jobs:
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
+
+      - name: Enable GitHub Auto-Merge on PR (DEPENDABOT PAT)
+        if: ${{ steps.cpr_pat.outputs.pull-request-number && success() }}
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+          pull-request-number: ${{ steps.cpr_pat.outputs.pull-request-number }}
           merge-method: squash
 
       - name: Enable GitHub Auto-Merge on PR (fallback)
