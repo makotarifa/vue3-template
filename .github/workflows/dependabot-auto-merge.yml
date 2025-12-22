@@ -30,21 +30,32 @@ jobs:
             const owner = context.repo.owner
             const repo = context.repo.repo
             const sha = context.payload.pull_request.head.sha
-            const maxTries = 90
+            const maxTries = 30
+            const sleepMs = 10000
             for (let i = 0; i < maxTries; i++) {
-              const res = await github.rest.checks.listForRef({ owner, repo, ref: sha })
-              const runs = res.data.check_runs
-              const failed = runs.filter(cr => ['failure','cancelled','timed_out','action_required'].includes(cr.conclusion))
+              const checks = await github.rest.checks.listForRef({ owner, repo, ref: sha })
+              const runs = checks.data.check_runs
+              const failed = runs.filter(cr => ['failure','cancelled','timed_out','action_required','startup_failure'].includes(cr.conclusion))
               if (failed.length > 0) {
                 core.setOutput('ready', 'false')
                 return
               }
               const pending = runs.filter(cr => cr.status !== 'completed')
-              if (pending.length === 0) {
+              const statuses = await github.rest.repos.getCombinedStatusForRef({ owner, repo, ref: sha })
+              const state = statuses.data.state // success | failure | pending
+              if (state === 'failure') {
+                core.setOutput('ready', 'false')
+                return
+              }
+              if (pending.length === 0 && state === 'success') {
                 core.setOutput('ready', 'true')
                 return
               }
-              await new Promise(r => setTimeout(r, 20000))
+              if (runs.length === 0 && (statuses.data.statuses ?? []).length === 0) {
+                core.setOutput('ready', 'true')
+                return
+              }
+              await new Promise(r => setTimeout(r, sleepMs))
             }
             core.setOutput('ready', 'false')
       - uses: ahmadnassri/action-dependabot-auto-merge@v2
