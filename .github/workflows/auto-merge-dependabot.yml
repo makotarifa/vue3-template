@@ -10,10 +10,21 @@ permissions:
 
 jobs:
   enable:
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.event.pull_request.user.type == 'Bot'
     runs-on: ubuntu-latest
     steps:
+      - name: Check PR checks status
+        id: checks
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sha = context.payload.pull_request.head.sha
+            const res = await github.rest.checks.listForRef({ owner: context.repo.owner, repo: context.repo.repo, ref: sha })
+            const failing = res.data.check_runs.filter(cr => ['failure','cancelled','timed_out','action_required'].includes(cr.conclusion))
+            core.setOutput('ok', failing.length === 0 ? 'true' : 'false')
+
       - name: Enable GitHub Auto-Merge
+        if: ${{ steps.checks.outputs.ok == 'true' }}
         uses: peter-evans/enable-pull-request-automerge@v4
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
