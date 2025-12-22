@@ -59,8 +59,14 @@ jobs:
               await new Promise(r => setTimeout(r, sleepMs))
             }
             core.setOutput('ready', 'false')
-      - uses: ahmadnassri/action-dependabot-auto-merge@v2
-        if: ${{ steps.waitchecks.outputs.ready == 'true' }}
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
         with:
-          github-token: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
-          target: minor
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Auto-merge PR
+        if: ${{ steps.waitchecks.outputs.ready == 'true' && (steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch') }}
+        env:
+          GH_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge "$PR_URL" --squash
