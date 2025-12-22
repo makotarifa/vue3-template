@@ -12,6 +12,8 @@ jobs:
   enable:
     if: github.event.pull_request.user.login == 'dependabot[bot]' && github.event.pull_request.user.type == 'Bot'
     runs-on: ubuntu-latest
+    env:
+      DEPENDABOT_AUTOMERGE_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
     steps:
       - name: Check PR checks status
         id: checks
@@ -24,15 +26,15 @@ jobs:
             core.setOutput('ok', failing.length === 0 ? 'true' : 'false')
 
       - name: Enable Auto-Merge (PAT)
-        if: ${{ steps.checks.outputs.ok == 'true' && secrets.DEPENDABOT_AUTOMERGE_TOKEN != '' }}
+        if: ${{ steps.checks.outputs.ok == 'true' && env.DEPENDABOT_AUTOMERGE_TOKEN != '' }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          token: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+          token: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
 
       - name: Enable Auto-Merge (GITHUB_TOKEN)
-        if: ${{ steps.checks.outputs.ok == 'true' && (secrets.DEPENDABOT_AUTOMERGE_TOKEN == '' ) }}
+        if: ${{ steps.checks.outputs.ok == 'true' && (env.DEPENDABOT_AUTOMERGE_TOKEN == '' ) }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           pull-request-number: ${{ github.event.pull_request.number }}

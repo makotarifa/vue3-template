@@ -16,6 +16,9 @@ jobs:
     concurrency:
       group: auto-deps-minor
       cancel-in-progress: true
+    env:
+      PR_TOKEN: ${{ secrets.PR_TOKEN }}
+      DEPENDABOT_AUTOMERGE_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
 
     steps:
       - name: Checkout
@@ -78,11 +81,11 @@ jobs:
             }
 
       - name: Create Pull Request (using PAT if provided)
-        if: ${{ secrets.PR_TOKEN != '' }}
+        if: ${{ env.PR_TOKEN != '' }}
         id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.PR_TOKEN }}
+          token: ${{ env.PR_TOKEN }}
           branch: chore/auto-deps-minor
           title: 'chore(deps): auto minor/patch updates'
           commit-message: 'chore(deps): auto minor/patch updates via pnpm update'
@@ -97,11 +100,11 @@ jobs:
           delete-branch: true
 
       - name: Create Pull Request (using DEPENDABOT_AUTOMERGE_TOKEN)
-        if: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN != '' && steps.cpr.outputs.pull-request-number == '' }}
+        if: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN != '' && steps.cpr.outputs.pull-request-number == '' }}
         id: cpr_pat
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+          token: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN }}
           branch: chore/auto-deps-minor
           title: 'chore(deps): auto minor/patch updates'
           commit-message: 'chore(deps): auto minor/patch updates via pnpm update'
@@ -144,7 +147,7 @@ jobs:
         if: ${{ steps.cpr_pat.outputs.pull-request-number && success() }}
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          token: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+          token: ${{ env.DEPENDABOT_AUTOMERGE_TOKEN }}
           pull-request-number: ${{ steps.cpr_pat.outputs.pull-request-number }}
           merge-method: squash
 
