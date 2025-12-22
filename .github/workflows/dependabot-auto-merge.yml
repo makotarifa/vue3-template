@@ -13,8 +13,40 @@ jobs:
       checks: read
       statuses: read
     steps:
+      - name: Validate token
+        id: token
+        env:
+          PAT: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
+        run: |
+          if [ -z "$PAT" ]; then
+            echo "DEPENDABOT_AUTOMERGE_TOKEN no definido" >&2
+            exit 1
+          fi
+      - name: Wait for checks to pass
+        id: waitchecks
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner
+            const repo = context.repo.repo
+            const sha = context.payload.pull_request.head.sha
+            const maxTries = 90
+            for (let i = 0; i < maxTries; i++) {
+              const res = await github.rest.checks.listForRef({ owner, repo, ref: sha })
+              const runs = res.data.check_runs
+              const failed = runs.filter(cr => ['failure','cancelled','timed_out','action_required'].includes(cr.conclusion))
+              if (failed.length > 0) {
+                core.setFailed('Required checks failing')
+                return
+              }
+              const pending = runs.filter(cr => cr.status !== 'completed')
+              if (pending.length === 0) {
+                return
+              }
+              await new Promise(r => setTimeout(r, 20000))
+            }
+            core.setFailed('Timeout waiting for checks to complete')
       - uses: ahmadnassri/action-dependabot-auto-merge@v2
         with:
           github-token: ${{ secrets.DEPENDABOT_AUTOMERGE_TOKEN }}
           target: minor
-          merge-method: squash
